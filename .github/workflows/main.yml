@@ -19,19 +19,23 @@ jobs:
   build:
     # The type of runner that the job will run on
     runs-on: ubuntu-latest
-
-    # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
+    - name: Install SSH key
+      uses: shimataro/ssh-key-action@v2
+      with:
+        key: ${{ secrets.SSH_KEY }}
+        name: id_rsa # optional
+        known_hosts: ${{ secrets.KNOWN_HOSTS }}
+        config: ${{ secrets.CONFIG }} # ssh_config; optional
+        if_key_exists: fail # replace / ignore / fail; optional (defaults to fail)
+    
+    - name: rsync over ssh
+      run: rsync ./foo/ user@remote:bar/
+    # Steps represent a sequence of tasks that will be executed as part of the job
+  
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
-      - uses: actions/checkout@v2
+    - uses: actions/checkout@v2
 
-      - name: Run a one-line script
-        shell: bash
-        run: |
-          echo {{$SSH_PRIVATE_KEY}} | tr -d '\r' | ssh-add -
-          mkdir -p ~/.ssh
-          chmod 700 ~/.ssh
-          ssh-keyscan 51.250.0.82 >> ~/.ssh/known_hosts
-          echo "$SSH_KNOWN_HOSTS" >> ~/.ssh/known_hosts
-          chmod 644 ~/.ssh/known_hosts
-          ansible-playbook -i ./hosts.inv ./pb_docker.yml
+    - name: Run a one-line script
+      shell: bash
+      run: ansible-playbook -i ./hosts.inv ./pb_docker.yml
