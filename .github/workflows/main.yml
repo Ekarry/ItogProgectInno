@@ -27,4 +27,12 @@ jobs:
 
       - name: Run a one-line script
         shell: bash
-        run: ansible-playbook -i ./hosts.inv ./pb_docker.yml
+        run: |
+          eval $(ssh-agent -s)
+          echo "$SSH_PRIVATE_KEY" | tr -d '\r' | ssh-add -
+          mkdir -p ~/.ssh
+          chmod 700 ~/.ssh
+          ssh-keyscan 51.250.0.82 >> ~/.ssh/known_hosts
+          echo "$SSH_KNOWN_HOSTS" >> ~/.ssh/known_hosts
+          chmod 644 ~/.ssh/known_hosts
+          ansible-playbook -i ./hosts.inv ./pb_docker.yml
