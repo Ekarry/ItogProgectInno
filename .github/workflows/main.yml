@@ -28,9 +28,7 @@ jobs:
         known_hosts: ${{ secrets.KNOWN_HOSTS }}
         config: ${{ secrets.CONFIG }} # ssh_config; optional
         if_key_exists: fail # replace / ignore / fail; optional (defaults to fail)
-    
-    - name: rsync over ssh
-      run: rsync ./foo/ user@remote:bar/
+  
     # Steps represent a sequence of tasks that will be executed as part of the job
   
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
