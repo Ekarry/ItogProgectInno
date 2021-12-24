@@ -28,7 +28,7 @@ jobs:
       - name: Run a one-line script
         shell: bash
         run: |
-          echo "$SSH_PRIVATE_KEY" | tr -d '\r' | ssh-add -
+          echo {{$SSH_PRIVATE_KEY}} | tr -d '\r' | ssh-add -
           mkdir -p ~/.ssh
           chmod 700 ~/.ssh
           ssh-keyscan 51.250.0.82 >> ~/.ssh/known_hosts
