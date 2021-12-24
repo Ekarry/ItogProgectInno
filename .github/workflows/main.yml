@@ -28,7 +28,6 @@ jobs:
       - name: Run a one-line script
         shell: bash
         run: |
-          eval $(ssh-agent -s)
           echo "$SSH_PRIVATE_KEY" | tr -d '\r' | ssh-add -
           mkdir -p ~/.ssh
           chmod 700 ~/.ssh
