@@ -28,5 +28,5 @@ jobs:
       - name: Run a one-line script
         shell: bash
         run: |
-          cd ./Ekarry/ItogProgectInno/
+          cd home/Ekarry/ItogProgectInno/
           ansible-playbook -i ./hosts.inv ./pb_docker.yml
