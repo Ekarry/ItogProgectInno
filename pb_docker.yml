@@ -75,7 +75,8 @@
          image: nginx:v5
          state: started
          published_ports: "80:80"
-         exposed_ports: 80
+         published_ports: "443:443"
+#         exposed_ports: 80
          networks:
            - name: flask
     - name: Add user to docker group
