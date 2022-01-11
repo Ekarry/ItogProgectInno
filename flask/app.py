@@ -14,7 +14,7 @@ login_manager = LoginManager()
 login_manager.init_app(app)
 login_manager.login_view = "login"
 
-UPLOAD_FOLDER = os.getenv("DIR", "./flies ")
+UPLOAD_FOLDER = os.getenv("DIR", "/home")
 USER = os.getenv("USER", "Usver")
 TOKEN = os.getenv("TOKEN", "blabla")
 
