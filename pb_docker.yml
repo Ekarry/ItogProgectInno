@@ -3,10 +3,6 @@
   become: true
   gather_facts: no
   tasks:
-    - name: Install Docker from repository 
-      apt:
-       name: docker.io
-       state: present
     - name: Install pip3 package
       package:
         update_cache: yes 
@@ -16,6 +12,10 @@
       pip:
        name: docker
        executable: pip3
+    - name: Install Docker from repository 
+      apt:
+       name: docker.io
+       state: present    
     - name: Create Directory for projects
       file:
         path: /opt/docker
@@ -53,6 +53,17 @@
     - name: Create a network
       docker_network:
         name: flask
+    - name: Run Nginx
+      docker_container:
+         name: nginx
+         image: nginx:v5
+         state: started
+         published_ports: 
+           - "80:80"
+           - "443:443"
+         exposed_ports: 80, 443
+         networks:
+           - name: flask
     - name: Run Flask 1
       docker_container:
          name: flask1
@@ -67,16 +78,6 @@
          image: flask:v1 
          state: started
          exposed_ports: 5000
-         networks:
-           - name: flask
-    - name: Run Nginx
-      docker_container:
-         name: nginx
-         image: nginx:v5
-         state: started
-         published_ports: "80:80"
-         published_ports: "443:443"
-#         exposed_ports: 80, 443
          networks:
            - name: flask
     - name: Add user to docker group
