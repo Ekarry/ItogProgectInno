@@ -53,17 +53,6 @@
     - name: Create a network
       docker_network:
         name: flask
-    - name: Run Nginx
-      docker_container:
-         name: nginx
-         image: nginx:v5
-         state: started
-         published_ports: 
-           - "80:80"
-           - "443:443"
-         exposed_ports: 80, 443
-         networks:
-           - name: flask
     - name: Run Flask 1
       docker_container:
          name: flask1
@@ -80,6 +69,17 @@
          exposed_ports: 5000
          networks:
            - name: flask
+    - name: Run Nginx
+      docker_container:
+         name: nginx
+         image: nginx:v5
+         state: started
+         published_ports: 
+           - "80:80"
+           - "443:443"
+         exposed_ports: 80, 443
+         networks:
+           - name: flask   
     - name: Add user to docker group
       command: sudo usermod -aG docker $USER
       become: yes
