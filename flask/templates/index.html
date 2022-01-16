@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+{% block title%} {{ title }} {% endblock %}
+{% block content%}
+
+<div class="container py-4 text-center">
+
+
+    {% if current_user.is_authenticated %}
+
+    <h1>Welcome {{ current_user.username }}</h1>
+    <a href="{{url_for('logout')}}">Logout</a>
+	<a href="{{url_for('index')}}">Main</a>
+    <a href="{{url_for('upload')}}">Upload file</a>
+	{% for entry in entries %}
+        {% if entry.is_file() %}
+			<div style="padding: 10px; background-color: #EEE; margin: 20px; text-align: left">
+				<a  style="font-size: 24px; color: black" href={{ url_for("download_file", path=entry.path) }}>{{ entry.name }}</a>
+			</div>
+        {% else %}
+            <a href={{ entry.path }}>{{ entry.name }}</a>
+        {% endif %}
+     {% endfor %}
+    {% else %}
+
+    <a href="{{url_for('login')}}">Sign in/Sign Up</a>
+    
+    {% endif %}
+</div>
+{% endblock %}

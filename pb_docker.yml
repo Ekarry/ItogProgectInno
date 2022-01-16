@@ -53,6 +53,12 @@
     - name: Create a network
       docker_network:
         name: flask
+    - name: Create a volumes my_vol
+      docker_volume:
+        name: my_vol
+    - name: Create a volumes my_db
+      docker_volume:
+        name: my_db
     - name: Run Flask 1
       docker_container:
          name: flask1
@@ -61,6 +67,9 @@
          exposed_ports: 5000
          networks:
            - name: flask
+         volumes:
+           - my_vol:/usr/src/app/files
+           - my_db:/usr/src/app/db
     - name: Run Flask 2
       docker_container:
          name: flask2
@@ -69,6 +78,9 @@
          exposed_ports: 5000
          networks:
            - name: flask
+         volumes:
+           - my_vol:/usr/src/app/files
+           - my_db:/usr/src/app/db
     - name: Run Nginx
       docker_container:
          name: nginx
@@ -77,7 +89,9 @@
          published_ports: 
            - "80:80"
            - "443:443"
-         exposed_ports: 80, 443
+#         exposed_ports: 
+#           - 80
+#           - 443
          networks:
            - name: flask   
     - name: Add user to docker group
